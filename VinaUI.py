@@ -4,6 +4,7 @@ import fnmatch
 import time
 from datetime import datetime
 from PyQt5 import QtCore, QtGui, QtWidgets
+import runFunctions as runF
 
 
 #Used to make dirs in same folder
@@ -15,6 +16,8 @@ DATA_HOME = os.path.dirname(PATH_HOME)
 
 LOGS_FILE = DATA_HOME + '\Logs'
 OUTPUT_FILE = DATA_HOME + '\Ligand Outputs'
+
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -186,9 +189,9 @@ class Ui_MainWindow(object):
         self.refresh_lists.clicked.connect(lambda: self.pop_ligands())
         self.refresh_lists.clicked.connect(lambda: self.pop_receptors())
         self.pop_previous.clicked.connect(lambda: self.pop_previous_data())
-        self.pushButton.clicked.connect(lambda: self.run_selected_ligand())
-        self.all_ligands.clicked.connect(lambda: self.run_all_ligands())
-        self.randomSeed.stateChanged.connect(lambda: self.clear_seed_value())
+        self.pushButton.clicked.connect(lambda: runF.run_selected_ligand())
+        self.all_ligands.clicked.connect(lambda: runF.run_all_ligands())
+        self.randomSeed.stateChanged.connect(lambda: runF.clear_seed_value())
 
 
     def retranslateUi(self, MainWindow):
