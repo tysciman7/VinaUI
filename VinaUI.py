@@ -1,23 +1,18 @@
 import os
-import sys
 import fnmatch
-import time
-from datetime import datetime
 from PyQt5 import QtCore, QtGui, QtWidgets
 import runFunctions as runVina
 
+# Used to make dirs in same folder
+# DATA_HOME = os.getcwd()
 
-#Used to make dirs in same folder
-#DATA_HOME = os.getcwd()
-
-#Used to make dirs one above
+# Used to make dirs one above
 PATH_HOME = os.getcwd()
 DATA_HOME = os.path.dirname(PATH_HOME)
 
-LOGS_FILE = DATA_HOME + '\Logs'
-OUTPUT_FILE = DATA_HOME + '\Ligand Outputs'
 
-
+# LOGS_FILE = DATA_HOME + '\Logs'
+# OUTPUT_FILE = DATA_HOME + '\Ligand Outputs'
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -25,9 +20,9 @@ class Ui_MainWindow(object):
         MainWindow.resize(531, 360)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.receptor = QtWidgets.QComboBox(self.centralwidget)
-        self.receptor.setGeometry(QtCore.QRect(80, 15, 170, 22))
-        self.receptor.setObjectName("receptor")
+        self.receptorList = QtWidgets.QComboBox(self.centralwidget)
+        self.receptorList.setGeometry(QtCore.QRect(80, 15, 170, 22))
+        self.receptorList.setObjectName("receptorList")
         self.ligand = QtWidgets.QComboBox(self.centralwidget)
         self.ligand.setGeometry(QtCore.QRect(340, 15, 170, 22))
         self.ligand.setObjectName("ligand")
@@ -168,8 +163,6 @@ class Ui_MainWindow(object):
         self.seedChecker.setText('Please indicate either specific seed or random seed')
         self.seedChecker.setIcon(self.seedChecker.Warning)
 
-
-
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 531, 21))
@@ -192,9 +185,8 @@ class Ui_MainWindow(object):
         self.refresh_lists.clicked.connect(lambda: self.pop_receptors())
         self.pop_previous.clicked.connect(lambda: self.pop_previous_data())
         self.randomSeed.stateChanged.connect(lambda: self.clear_seed_value())
-        self.pushButton.clicked.connect(lambda: runVina.run_selected_ligand())
-        self.all_ligands.clicked.connect(lambda: runVina.run_all_ligands())
-
+        self.pushButton.clicked.connect(lambda: self.run_selected_ligand())
+        self.all_ligands.clicked.connect(lambda: self.run_all_ligands())
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -221,20 +213,6 @@ class Ui_MainWindow(object):
         self.cpuLabel.setText(_translate("MainWindow", "CPU Cores:"))
         self.seedLabel.setText(_translate("MainWindow", "Set Seed:"))
 
-
-    # def initialize_dir(self):
-    #     os.chdir(DATA_HOME)
-    #     if not os.path.isdir('Ligands'):
-    #         os.mkdir('Ligands')
-    #     if not os.path.isdir('Receptors'):
-    #         os.mkdir('Receptors')
-    #     if not os.path.isdir('Ligand Outputs'):
-    #         os.mkdir('Ligand Outputs')
-    #     if not os.path.isdir('Logs'):
-    #         os.mkdir('Logs')
-
-    # Fills the Receptor List with Receptors within Respective Directory
-
     # Fills the Ligand List with Ligands within Respective Directory
     def pop_ligands(self):
         self.ligand.clear()
@@ -244,37 +222,37 @@ class Ui_MainWindow(object):
         self.ligand.addItems(ligand_list)
         self.total_ligand_value.setText(str(len(ligand_list)))
 
-
+    # Fills the Receptor List with Receptors within Respective Directory
     def pop_receptors(self):
-        self.receptor.clear()
+        self.receptorList.clear()
         os.chdir(DATA_HOME)
         os.chdir('Receptors')
         receptor_list = fnmatch.filter(os.listdir(), '*.pdbqt')
-        self.receptor.addItems(receptor_list)
+        self.receptorList.addItems(receptor_list)
 
     def pop_previous_data(self):
-        try:
+        # try:
             os.chdir(DATA_HOME)
             config_file = open("conf.txt", "r")
             config_file.readline()
             config_file.readline()
-            tempLine = config_file.readline()
-            self.center_x.setText(tempLine[11:-1])
-            tempLine = config_file.readline()
-            self.center_y.setText(tempLine[11:-1])
-            tempLine = config_file.readline()
-            self.center_z.setText(tempLine[11:-1])
-            tempLine = config_file.readline()
-            self.size_x.setText(tempLine[9:-1])
-            tempLine = config_file.readline()
-            self.size_y.setText(tempLine[9:-1])
-            tempLine = config_file.readline()
-            self.size_z.setText(tempLine[9:-1])
-            tempLine = config_file.readline()
-            self.exhaustiveness.setText(tempLine[17:len(tempLine)])
-            tempLine = config_file.readline()
-            self.cpuSet.setValue(int(tempLine[6:-1]))
-        except:
+            _temp = config_file.readline()
+            self.center_x.setText(_temp[11:-1])
+            _temp = config_file.readline()
+            self.center_y.setText(_temp[11:-1])
+            _temp = config_file.readline()
+            self.center_z.setText(_temp[11:-1])
+            _temp = config_file.readline()
+            self.size_x.setText(_temp[9:-1])
+            _temp = config_file.readline()
+            self.size_y.setText(_temp[9:-1])
+            _temp = config_file.readline()
+            self.size_z.setText(_temp[9:-1])
+            _temp = config_file.readline()
+            self.exhaustiveness.setText(_temp[17:len(_temp)])
+            _temp = config_file.readline()
+            self.cpuSet.setValue(int(_temp[6:-1]))
+        # except:
             print('Error with Populate')
             self.popVerify.exec()
 
@@ -285,7 +263,7 @@ class Ui_MainWindow(object):
 
     # If
     def check_entered_seed(self):
-        if (not(self.randomSeed.isChecked()) and self.seed_value.text() == ''):
+        if not (self.randomSeed.isChecked()) and self.seed_value.text() == '':
             print('User needs to specify a seed(int) or select randomize seed')
             self.seedChecker.exec()
             return False
@@ -293,7 +271,8 @@ class Ui_MainWindow(object):
             return True
 
     def check_empty_fields(self):
-        if '' in [self.center_x.text(), self.center_y.text(), self.center_z.text(), self.size_z.text(), self.size_y.text(), self.size_z.text(), self.exhaustiveness.text()]:
+        if '' in [self.center_x.text(), self.center_y.text(), self.center_z.text(), self.size_z.text(),
+                  self.size_y.text(), self.size_z.text(), self.exhaustiveness.text()]:
             print('One or more fields is empty Fields')
             self.popVerify.exec()
             return True
@@ -302,7 +281,7 @@ class Ui_MainWindow(object):
 
     def get_vina_conf_dict(self):
         vina_conf = {
-            "Receptor": self.receptor.currentText(),
+            "Receptor": self.receptorList.currentText(),
             "Ligand": '',
             "CenterX": self.center_x.text(),
             "CenterY": self.center_y.text(),
@@ -332,84 +311,3 @@ class Ui_MainWindow(object):
             vina_conf = self.get_vina_conf_dict()
             runVina.run_all_ligands(vina_conf)
 
-
-    # Not sure if needed
-    # def update_time(self, time_string):
-    #     self.time_remaining.setText(time_string)
-
-    # #Creates Configuration File then runs Vina
-    # def create_conf(self, ligand):
-    #     os.chdir(DATA_HOME)
-    #
-    #     ligandname = str(ligand[:-6])
-    #     receptor = self.receptor.currentText()
-    #     receptor_name = receptor[:-6]
-    #     cpuValue = self.cpuSet.value()
-    #     seed = self.seed_value.text()
-    #
-    #     current_date_time = str(datetime.now())
-    #     current_date_time = current_date_time.replace(':', '.')
-    #     current_date_time = current_date_time[0:-7]
-    #     log_file_name = ligandname + '+' + receptor_name + '_' + current_date_time + '_log.txt'
-    #     output_file_name = ligandname + '+' + receptor_name + '_' + current_date_time + "_output.pdbqt"
-    #
-    #     config_file = open("conf.txt", "w")
-    #     config_file.write("receptor = " + DATA_HOME + "\Receptors\\" + receptor + "\n")
-    #     config_file.write("ligand = " + DATA_HOME + "\Ligands\\" + ligand + "\n")
-    #     config_file.write("center_x = " + self.center_x.text() + "\n")
-    #     config_file.write("center_y = " + self.center_y.text() + "\n")
-    #     config_file.write("center_z = " + self.center_z.text() + "\n")
-    #     config_file.write("size_x = " + self.size_x.text() + "\n")
-    #     config_file.write("size_y = " + self.size_y.text() + "\n")
-    #     config_file.write("size_z = " + self.size_z.text() + "\n")
-    #     config_file.write("exhaustiveness = " + self.exhaustiveness.text() + "\n")
-    #     config_file.write("cpu = " + str(cpuValue) + "\n")
-    #     if not(self.randomSeed.isChecked()):
-    #         config_file.write("seed = " + seed + '\n')
-    #     config_file.write("log = " + LOGS_FILE + '\\' + log_file_name + "\n")
-    #     config_file.write("out = " + OUTPUT_FILE + '\\' + output_file_name + "\n")
-    #     config_file.close()
-    #
-    #     os.chdir(LOGS_FILE)
-    #     open(log_file_name, 'w').close()
-    #     os.chdir(OUTPUT_FILE)
-    #     open(output_file_name, 'w').close()
-    #
-    #
-    #     self.launch_vina()
-    #
-    #
-    # def launch_vina(self):
-    #     #subprocess.call(DATA_HOME + "\\veni_launch.bat")
-    #     os.chdir(DATA_HOME)
-    #     os.system('"C:\\Program Files (x86)\\The Scripps Research Institute\Vina\\vina.exe"' + ' --config conf.txt')
-    #
-    # def run_selected_ligand(self):
-    #     if not(self.check_entered_seed()) or self.check_empty_fields():
-    #         return
-    #     lig = self.ligand.currentText()
-    #     self.create_conf(lig)
-    #
-    # def run_all_ligands(self):
-    #     if not (self.check_entered_seed()) or self.check_empty_fields():
-    #         return
-    #     os.chdir(DATA_HOME)
-    #     os.chdir('Ligands')
-    #     ligand_list = fnmatch.filter(os.listdir(), '*.pdbqt')
-    #     ligands_remaining = len(ligand_list)
-    #     for lig in ligand_list:
-    #         tic = time.perf_counter()
-    #         self.create_conf(lig)
-    #         toc = time.perf_counter()
-    #         time_inst = toc - tic
-    #         #print(f"Test took: {time_inst:.3f} seconds\t")
-    #         #print(f"Time Remaining: {ligands_remaining * time_inst:.3f}")
-    #         self.time_remaining.setText(f"{ligands_remaining * time_inst:.3f}")
-    #         self.time_remaining.update()
-
-# app = QtWidgets.QApplication(sys.argv)
-# MainWindow = QtWidgets.QMainWindow()
-# ui = Ui_MainWindow()
-# ui.setupUi(MainWindow)
-# MainWindow.show()
-# sys.exit(app.exec_())
