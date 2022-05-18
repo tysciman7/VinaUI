@@ -3,6 +3,7 @@ from datetime import datetime, time
 import time
 import fnmatch
 
+
 # Used to make dirs in same folder
 # DATA_HOME = os.getcwd()
 
@@ -24,10 +25,6 @@ def initialize_dir():
         os.mkdir('Ligand Outputs')
     if not os.path.isdir('Logs'):
         os.mkdir('Logs')
-
-
-def update_time(self, time_string):
-    self.time_remaining.setText(time_string)
 
 
 # Creates Configuration File then runs Vina
@@ -80,7 +77,7 @@ def run_selected_ligand(vina_conf_dict):
     create_conf(vina_conf_dict)
 
 
-def run_all_ligands(vina_conf_dict):
+def run_all_ligands(ui, vina_conf_dict):
     os.chdir(DATA_HOME)
     os.chdir('Ligands')
     ligand_list = fnmatch.filter(os.listdir(), '*.pdbqt')
@@ -93,8 +90,8 @@ def run_all_ligands(vina_conf_dict):
         time_inst = toc - tic
         time_remaining = time_inst * ligands_remaining
         print('Time Remaining: ' + str(time_remaining) + 'seconds')
+        ui.update_time_remaining(time_remaining)
         ligands_remaining -= 1
 
-        # self.time_remaining.setText(f"{ligands_remaining * time_inst:.3f}")
-        # self.time_remaining.update()
+
 

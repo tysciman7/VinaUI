@@ -231,7 +231,7 @@ class Ui_MainWindow(object):
         self.receptorList.addItems(receptor_list)
 
     def pop_previous_data(self):
-        # try:
+        try:
             os.chdir(DATA_HOME)
             config_file = open("conf.txt", "r")
             config_file.readline()
@@ -249,10 +249,10 @@ class Ui_MainWindow(object):
             _temp = config_file.readline()
             self.size_z.setText(_temp[9:-1])
             _temp = config_file.readline()
-            self.exhaustiveness.setText(_temp[17:len(_temp)])
+            self.exhaustiveness.setText(_temp[17:-1])
             _temp = config_file.readline()
             self.cpuSet.setValue(int(_temp[6:-1]))
-        # except:
+        except:
             print('Error with Populate')
             self.popVerify.exec()
 
@@ -309,5 +309,8 @@ class Ui_MainWindow(object):
             return
         else:
             vina_conf = self.get_vina_conf_dict()
-            runVina.run_all_ligands(vina_conf)
+            runVina.run_all_ligands(self, vina_conf)
+
+    def update_time_remaining(self, time_r):
+        self.time_remaining.setText(f"{time_r:.3f}")
 
