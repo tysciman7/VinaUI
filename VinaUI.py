@@ -4,18 +4,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import runFunctions as runVina
 import directoryManager
 
-# Used to make dirs in same folder
-# DATA_HOME = os.getcwd()
-
-# Used to make dirs one above
-PATH_HOME = os.getcwd()
-DATA_HOME = os.path.dirname(PATH_HOME)
-
-
-# LOGS_FILE = DATA_HOME + '\Logs'
-# OUTPUT_FILE = DATA_HOME + '\Ligand Outputs'
 
 class Ui_MainWindow(object):
+    def __init__(self):
+        self.data_home = None
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(531, 360)
@@ -180,8 +173,9 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        # Call Functions
+        # Initialize
         directoryManager.init_config(self)
+        self.data_home = directoryManager.get_config()
         self.pop_receptors()
         self.pop_ligands()
 
@@ -223,11 +217,10 @@ class Ui_MainWindow(object):
         data_file_directory = QtWidgets.QFileDialog.getExistingDirectory(self.centralwidget, 'Please Choose a Directory')
         directoryManager.set_config(data_file_directory)
 
-
     # Fills the Ligand List with Ligands within Respective Directory
     def pop_ligands(self):
         self.ligand.clear()
-        os.chdir(DATA_HOME)
+        os.chdir(self.data_home)
         os.chdir('Ligands')
         ligand_list = fnmatch.filter(os.listdir(), '*.pdbqt')
         self.ligand.addItems(ligand_list)
@@ -236,14 +229,14 @@ class Ui_MainWindow(object):
     # Fills the Receptor List with Receptors within Respective Directory
     def pop_receptors(self):
         self.receptorList.clear()
-        os.chdir(DATA_HOME)
+        os.chdir(self.data_home)
         os.chdir('Receptors')
         receptor_list = fnmatch.filter(os.listdir(), '*.pdbqt')
         self.receptorList.addItems(receptor_list)
 
     def pop_previous_data(self):
         try:
-            os.chdir(DATA_HOME)
+            os.chdir(self.data_home)
             config_file = open("conf.txt", "r")
             config_file.readline()
             config_file.readline()

@@ -2,15 +2,10 @@ import os
 from datetime import datetime, time
 import time
 import fnmatch
+import directoryManager
 
 
-# Used to make dirs in same folder
-# DATA_HOME = os.getcwd()
-
-# NOTE make these variables more global / editable in separate file
-# Used to make dirs one above
-PATH_HOME = os.getcwd()
-DATA_HOME = os.path.dirname(PATH_HOME)
+DATA_HOME = directoryManager.get_config()
 LOGS_FILE = DATA_HOME + '\Logs'
 OUTPUT_FILE = DATA_HOME + '\Ligand Outputs'
 

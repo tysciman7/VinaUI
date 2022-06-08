@@ -12,15 +12,18 @@ def init_config(ui):
         ui.initialize_data_dir()
     init_data_directory()
 
+
 def set_config(config_data):
     os.chdir(PROJECT_HOME)
     with open(CONFIG_FILE_NAME, 'w') as _config_file:
         json.dump(config_data, _config_file)
 
+
 def get_config():
     os.chdir(PROJECT_HOME)
     with open(CONFIG_FILE_NAME, 'r') as _config_file:
         return json.load(_config_file)
+
 
 def init_data_directory():
     os.chdir(get_config())
