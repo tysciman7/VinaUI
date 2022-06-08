@@ -2,6 +2,7 @@ import os
 import fnmatch
 from PyQt5 import QtCore, QtGui, QtWidgets
 import runFunctions as runVina
+import directoryManager
 
 # Used to make dirs in same folder
 # DATA_HOME = os.getcwd()
@@ -162,6 +163,10 @@ class Ui_MainWindow(object):
         self.seedChecker.setWindowTitle('Seed Selection Error')
         self.seedChecker.setText('Please indicate either specific seed or random seed')
         self.seedChecker.setIcon(self.seedChecker.Warning)
+        # File Directory Initialization
+        self.dirInit = QtWidgets.QMessageBox(self.centralwidget)
+        self.dirInit.setWindowTitle('Set an Initial Data Directory')
+        self.dirInit.setText('Please indicate a directory for data to be accessed/ saved')
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -176,7 +181,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         # Call Functions
-        runVina.initialize_dir()
+        directoryManager.init_config(self)
         self.pop_receptors()
         self.pop_ligands()
 
@@ -212,6 +217,12 @@ class Ui_MainWindow(object):
         self.time_remaining.setText(_translate("MainWindow", "..."))
         self.cpuLabel.setText(_translate("MainWindow", "CPU Cores:"))
         self.seedLabel.setText(_translate("MainWindow", "Set Seed:"))
+
+    def initialize_data_dir(self):
+        self.dirInit.exec()
+        data_file_directory = QtWidgets.QFileDialog.getExistingDirectory(self.centralwidget, 'Please Choose a Directory')
+        directoryManager.set_config(data_file_directory)
+
 
     # Fills the Ligand List with Ligands within Respective Directory
     def pop_ligands(self):
@@ -256,7 +267,7 @@ class Ui_MainWindow(object):
             print('Error with Populate')
             self.popVerify.exec()
 
-    # If User Selects to Use Randomized Seeds, The field associated with a Seed Value is clearer
+    # If User Selects to Use Randomized Seeds, The field associated with a Seed Value is cleared
     def clear_seed_value(self):
         if self.randomSeed.isChecked():
             self.seed_value.clear()

@@ -15,18 +15,6 @@ LOGS_FILE = DATA_HOME + '\Logs'
 OUTPUT_FILE = DATA_HOME + '\Ligand Outputs'
 
 
-def initialize_dir():
-    os.chdir(DATA_HOME)
-    if not os.path.isdir('Ligands'):
-        os.mkdir('Ligands')
-    if not os.path.isdir('Receptors'):
-        os.mkdir('Receptors')
-    if not os.path.isdir('Ligand Outputs'):
-        os.mkdir('Ligand Outputs')
-    if not os.path.isdir('Logs'):
-        os.mkdir('Logs')
-
-
 # Creates Configuration File then runs Vina
 def create_conf(vina_conf_dict):
     os.chdir(DATA_HOME)
