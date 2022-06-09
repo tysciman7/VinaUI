@@ -5,8 +5,47 @@ import runFunctions as runVina
 import directoryManager
 
 
-class Ui_MainWindow(object):
+class Ui_MainWindow():
     def __init__(self):
+        self.ligand = None
+        self.receptorListLabel = None
+        self.ligandListLabel = None
+        self.groupBox = None
+        self.center_x = None
+        self.center_y = None
+        self.center_z = None
+        self.cXlabel = None
+        self.cYlabel = None
+        self.cZlabel = None
+        self.groupBox_2 = None
+        self.size_x = None
+        self.size_y = None
+        self.size_z = None
+        self.sizeX_label = None
+        self.sizeY_label = None
+        self.sizeZ_label = None
+        self.exhaustiveness = None
+        self.exhaustiveness_label = None
+        self.refresh_lists = None
+        self.pushButton = None
+        self.pop_previous = None
+        self.popVerify = None
+        self.all_ligands = None
+        self.total_ligand_label = None
+        self.total_ligand_value = None
+        self.time_label = None
+        self.time_remaining = None
+        self.cpuLabel = None
+        self.cpuSet = None
+        self.seedLabel = None
+        self.seed_value = None
+        self.randomSeed = None
+        self.seedChecker = None
+        self.dirInit = None
+        self.menubar = None
+        self.statusbar = None
+        self.centralwidget = None
+        self.receptorList = None
         self.data_home = None
 
     def setupUi(self, MainWindow):
