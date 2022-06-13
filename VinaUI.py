@@ -27,7 +27,7 @@ class Ui_MainWindow():
         self.exhaustiveness = None
         self.exhaustiveness_label = None
         self.refresh_lists = None
-        self.pushButton = None
+        self.selected_ligand = None
         self.pop_previous = None
         self.popVerify = None
         self.all_ligands = None
@@ -47,10 +47,12 @@ class Ui_MainWindow():
         self.centralwidget = None
         self.receptorList = None
         self.data_home = None
+        self.width = 531
+        self.height = 360
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(531, 360)
+        MainWindow.resize(self.width, self.height) # 531, 360
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.receptorList = QtWidgets.QComboBox(self.centralwidget)
@@ -126,9 +128,10 @@ class Ui_MainWindow():
         self.refresh_lists.setObjectName("refresh_lists")
         self.refresh_lists.setToolTip('Updates both receptor and ligand lists with current inventory.')
         # Go Button
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(400, 290, 120, 25))
-        self.pushButton.setObjectName("pushButton")
+        self.selected_ligand = QtWidgets.QPushButton(self.centralwidget)
+        self.selected_ligand.setGeometry(QtCore.QRect(400, 290, 120, 25))
+        self.selected_ligand.setObjectName("selected_ligand")
+        self.selected_ligand.setToolTip("Runs ligand currently selected in list above.")
         # Populate Previous Data Button
         self.pop_previous = QtWidgets.QPushButton(self.centralwidget)
         self.pop_previous.setGeometry(QtCore.QRect(20, 250, 120, 25))
@@ -223,7 +226,7 @@ class Ui_MainWindow():
         self.refresh_lists.clicked.connect(lambda: self.pop_receptors())
         self.pop_previous.clicked.connect(lambda: self.pop_previous_data())
         self.randomSeed.stateChanged.connect(lambda: self.clear_seed_value())
-        self.pushButton.clicked.connect(lambda: self.run_selected_ligand())
+        self.selected_ligand.clicked.connect(lambda: self.run_selected_ligand())
         self.all_ligands.clicked.connect(lambda: self.run_all_ligands())
 
     def retranslateUi(self, MainWindow):
@@ -241,7 +244,7 @@ class Ui_MainWindow():
         self.sizeZ_label.setText(_translate("MainWindow", "Z"))
         self.exhaustiveness_label.setText(_translate("MainWindow", "Exhaustiveness:"))
         self.refresh_lists.setText(_translate("MainWindow", "Refresh Both Lists"))
-        self.pushButton.setText(_translate("MainWindow", "Run Selected Ligand"))
+        self.selected_ligand.setText(_translate("MainWindow", "Run Selected Ligand"))
         self.pop_previous.setText(_translate("MainWindow", "Populate Config Data"))
         self.all_ligands.setText(_translate("MainWindow", "Run All Ligands"))
         self.total_ligand_label.setText(_translate("MainWindow", "Total Ligands:"))
@@ -251,6 +254,7 @@ class Ui_MainWindow():
         self.cpuLabel.setText(_translate("MainWindow", "CPU Cores:"))
         self.seedLabel.setText(_translate("MainWindow", "Set Seed:"))
 
+    # Initialize Config File to contain data dir and call functions associated with building internal data dirs
     def initialize_data_dir(self):
         self.dirInit.exec()
         data_file_directory = QtWidgets.QFileDialog.getExistingDirectory(self.centralwidget, 'Please Choose a Directory')
