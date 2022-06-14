@@ -7,7 +7,9 @@ DATA_PATH = ''
 VINA_PATH = ''
 CONFIG_DATA = {}
 
-
+# Checks for existing config file
+# If it doesn't exist user is prompted for both data and vina paths
+# If it does exist, the config data is read from existing file
 def init_config(ui):
     os.chdir(PROJECT_HOME)
     if not os.path.exists(CONFIG_FILE_NAME):
@@ -19,6 +21,7 @@ def init_config(ui):
     init_data_directory()
 
 
+# Given an correct path element and the path itself, a config file is written and also stored in CONFIG_DATA variable
 def set_config(element, _path):
     global CONFIG_DATA
     global DATA_PATH
@@ -45,6 +48,7 @@ def set_config(element, _path):
         json.dump(CONFIG_DATA, _config_file)
 
 
+# Loads paths from config file to config variable
 def load_config():
     global CONFIG_DATA
     os.chdir(PROJECT_HOME)
@@ -52,6 +56,7 @@ def load_config():
         CONFIG_DATA = json.load(_config_file)
 
 
+# Gets path associated with requested element within config
 def get_config(element):
     os.chdir(PROJECT_HOME)
     if element in CONFIG_DATA.keys():
@@ -60,6 +65,7 @@ def get_config(element):
         print('Unknown element entered')
 
 
+# Checks root data directory for each directory associated with accessed / stored data
 def init_data_directory():
     os.chdir(get_config('data_path'))
     if not os.path.isdir('Ligands'):

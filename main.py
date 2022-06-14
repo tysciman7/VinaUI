@@ -11,7 +11,7 @@ if __name__ == '__main__':
     ui.setupUi(MainWindow)
     MainWindow.show()
 
-    # Initialize config file
+    # Initializes Config File and associated paths
     directoryManager.init_config(ui)
     ui.init_all()
     runFunctions.init_paths()

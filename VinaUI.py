@@ -224,12 +224,6 @@ class Ui_MainWindow():
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        # Initialize
-        # directoryManager.init_config(self)
-        # self.data_home = directoryManager.get_config('data_path')
-        # self.pop_receptors()
-        # self.pop_ligands()
-
         # Button Actions
         self.refresh_lists.clicked.connect(lambda: self.pop_ligands())
         self.refresh_lists.clicked.connect(lambda: self.pop_receptors())
@@ -263,6 +257,7 @@ class Ui_MainWindow():
         self.cpuLabel.setText(_translate("MainWindow", "CPU Cores:"))
         self.seedLabel.setText(_translate("MainWindow", "Set Seed:"))
 
+    # Initializes the data path and fills the receptor and ligand combo boxes with their respective directories
     def init_all(self):
         self.data_home = directoryManager.get_config('data_path')
         self.pop_receptors()
@@ -289,8 +284,6 @@ class Ui_MainWindow():
                 _errors += 1
                 print('Incorrect File Chosen ' + str(5 - _errors) + ' trys remaining')
 
-
-
     # Fills the Ligand List with Ligands within Respective Directory
     def pop_ligands(self):
         self.ligand.clear()
@@ -308,6 +301,7 @@ class Ui_MainWindow():
         receptor_list = fnmatch.filter(os.listdir(), '*.pdbqt')
         self.receptorList.addItems(receptor_list)
 
+    # Populates configuration text boxes with previous config file (if it exists) if not then user is prompted
     def pop_previous_data(self):
         try:
             os.chdir(self.data_home)
@@ -339,7 +333,8 @@ class Ui_MainWindow():
         if self.randomSeed.isChecked():
             self.seed_value.clear()
 
-    # If
+    # If user did not select randomized seed and a seed is not provided
+    # Then an error will show prompting the user for one or the other
     def check_entered_seed(self):
         if not (self.randomSeed.isChecked()) and self.seed_value.text() == '':
             print('User needs to specify a seed(int) or select randomize seed')
@@ -348,6 +343,7 @@ class Ui_MainWindow():
         else:
             return True
 
+    # If the user did not fill one of the configuation values then the user is prompted to fix said issues
     def check_empty_fields(self):
         if '' in [self.center_x.text(), self.center_y.text(), self.center_z.text(), self.size_z.text(),
                   self.size_y.text(), self.size_z.text(), self.exhaustiveness.text()]:
@@ -357,6 +353,7 @@ class Ui_MainWindow():
         else:
             return False
 
+    # Takes all user inputed data and creates a dict to contain all variables
     def get_vina_conf_dict(self):
         vina_conf = {
             "Receptor": self.receptorList.currentText(),
@@ -373,6 +370,7 @@ class Ui_MainWindow():
         }
         return vina_conf
 
+    # Calls the function to run the user selected ligand
     def run_selected_ligand(self):
         if not (self.check_entered_seed()) or self.check_empty_fields():
             return
@@ -382,6 +380,7 @@ class Ui_MainWindow():
             vina_conf.update({"Ligand": _ligand})
             runVina.run_selected_ligand(vina_conf)
 
+    # Calls the function to run all ligands in ligand directory
     def run_all_ligands(self):
         if not (self.check_entered_seed()) or self.check_empty_fields():
             return
@@ -389,6 +388,7 @@ class Ui_MainWindow():
             vina_conf = self.get_vina_conf_dict()
             runVina.run_all_ligands(self, vina_conf)
 
+    # Updates the time remaining label based on estimated time
     def update_time_remaining(self, time_r):
         self.time_remaining.setText(f"{time_r:.3f}")
 

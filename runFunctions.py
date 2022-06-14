@@ -9,7 +9,7 @@ logs_file = ''
 output_file = ''
 vina_path = ''
 
-
+# Initializes paths using config file
 def init_paths():
     global data_home, logs_file, output_file, vina_path
     data_home = directoryManager.get_config('data_path')
@@ -58,18 +58,16 @@ def create_conf(vina_conf_dict):
 
     launch_vina()
 
-
+# Runs vina
 def launch_vina():
-    # subprocess.call(data_home + "\\veni_launch.bat")
     os.chdir(data_home)
-    # os.system('"C:\\Program Files (x86)\\The Scripps Research Institute\Vina\\vina.exe"' + ' --config conf.txt')
     os.system(vina_path + ' --config conf.txt')
 
-
+# Runs user selected ligand
 def run_selected_ligand(vina_conf_dict):
     create_conf(vina_conf_dict)
 
-
+# Runs all ligands contained in the ligands directory
 def run_all_ligands(ui, vina_conf_dict):
     os.chdir(data_home)
     os.chdir('Ligands')
