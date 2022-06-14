@@ -202,6 +202,15 @@ class Ui_MainWindow():
         self.dirInit = QtWidgets.QMessageBox(self.centralwidget)
         self.dirInit.setWindowTitle('Set an Initial Data Directory')
         self.dirInit.setText('Please indicate a directory for data to be accessed/ saved')
+        # Vina Location Initialization
+        self.vinaInit = QtWidgets.QMessageBox(self.centralwidget)
+        self.vinaInit.setWindowTitle('Locate Vina')
+        self.vinaInit.setText('Please indicate where vina.exe is located within your system\n'
+                              'On windows: "C:\\Program Files (x86)\\The Scripps Research Institute\Vina\\vina.exe"\n')
+        # Vina Selection Error Box
+        self.vinaError = QtWidgets.QMessageBox(self.centralwidget)
+        self.vinaError.setWindowTitle('Error with Vina Path Selection')
+        self.vinaError.setText('Vina path was not selected correctly please locate vina.exe')
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -216,10 +225,10 @@ class Ui_MainWindow():
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         # Initialize
-        directoryManager.init_config(self)
-        self.data_home = directoryManager.get_config()
-        self.pop_receptors()
-        self.pop_ligands()
+        # directoryManager.init_config(self)
+        # self.data_home = directoryManager.get_config('data_path')
+        # self.pop_receptors()
+        # self.pop_ligands()
 
         # Button Actions
         self.refresh_lists.clicked.connect(lambda: self.pop_ligands())
@@ -231,7 +240,7 @@ class Ui_MainWindow():
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Interactive Vina v0.4"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Interactive Vina v0.9"))
         self.receptorListLabel.setText(_translate("MainWindow", "Receptor:"))
         self.ligandListLabel.setText(_translate("MainWindow", "Ligand:"))
         self.groupBox.setTitle(_translate("MainWindow", "Center Position"))
@@ -254,11 +263,33 @@ class Ui_MainWindow():
         self.cpuLabel.setText(_translate("MainWindow", "CPU Cores:"))
         self.seedLabel.setText(_translate("MainWindow", "Set Seed:"))
 
+    def init_all(self):
+        self.data_home = directoryManager.get_config('data_path')
+        self.pop_receptors()
+        self.pop_ligands()
+
     # Initialize Config File to contain data dir and call functions associated with building internal data dirs
-    def initialize_data_dir(self):
+    def initialize_data_path(self):
         self.dirInit.exec()
-        data_file_directory = QtWidgets.QFileDialog.getExistingDirectory(self.centralwidget, 'Please Choose a Directory')
-        directoryManager.set_config(data_file_directory)
+        data_dir_path = QtWidgets.QFileDialog.getExistingDirectory(self.centralwidget, 'Please Choose a Directory for Data to accessed/ stored')
+        directoryManager.set_config('data_path',data_dir_path)
+
+    # Initializes Vina path, gives user 5 trys before stopping
+    def initialize_vina_path(self):
+        self.vinaInit.exec()
+        _errors = 0
+        while _errors <=4:
+            vina_file_path = QtWidgets.QFileDialog.getOpenFileName(self.centralwidget, 'Please Select Vina.exe')
+            if str(vina_file_path[0][-8:]) == "vina.exe":
+                print('Correct File Found')
+                directoryManager.set_config('vina_path', vina_file_path[0])
+                break
+            else:
+                self.vinaError.exec()
+                _errors += 1
+                print('Incorrect File Chosen ' + str(5 - _errors) + ' trys remaining')
+
+
 
     # Fills the Ligand List with Ligands within Respective Directory
     def pop_ligands(self):

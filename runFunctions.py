@@ -4,15 +4,24 @@ import time
 import fnmatch
 import directoryManager
 
+data_home = ''
+logs_file = ''
+output_file = ''
+vina_path = ''
 
-DATA_HOME = directoryManager.get_config()
-LOGS_FILE = DATA_HOME + '\Logs'
-OUTPUT_FILE = DATA_HOME + '\Ligand Outputs'
+
+def init_paths():
+    global data_home, logs_file, output_file, vina_path
+    data_home = directoryManager.get_config('data_path')
+    logs_file = data_home + '\Logs'
+    output_file = data_home + '\Ligand Outputs'
+    vina_path = directoryManager.get_config('vina_path')
+    vina_path = '\"' + vina_path + '\"'
 
 
 # Creates Configuration File then runs Vina
 def create_conf(vina_conf_dict):
-    os.chdir(DATA_HOME)
+    os.chdir(data_home)
 
     receptor, ligand, center_x, center_y, center_z, size_x, size_y, size_z, exhaustiveness, seed, cpu_value = vina_conf_dict.values()
 
@@ -26,8 +35,8 @@ def create_conf(vina_conf_dict):
     output_file_name = ligand_name + '+' + receptor_name + '_' + current_date_time + "_output.pdbqt"
 
     config_file = open("conf.txt", "w")
-    config_file.write("receptor = " + DATA_HOME + "\Receptors\\" + receptor + "\n")
-    config_file.write("ligand = " + DATA_HOME + "\Ligands\\" + ligand + "\n")
+    config_file.write("receptor = " + data_home + "\Receptors\\" + receptor + "\n")
+    config_file.write("ligand = " + data_home + "\Ligands\\" + ligand + "\n")
     config_file.write("center_x = " + center_x + "\n")
     config_file.write("center_y = " + center_y + "\n")
     config_file.write("center_z = " + center_z + "\n")
@@ -38,22 +47,23 @@ def create_conf(vina_conf_dict):
     config_file.write("cpu = " + str(cpu_value) + "\n")
     if not (seed == ''):
         config_file.write("seed = " + seed + '\n')
-    config_file.write("log = " + LOGS_FILE + '\\' + log_file_name + "\n")
-    config_file.write("out = " + OUTPUT_FILE + '\\' + output_file_name + "\n")
+    config_file.write("log = " + logs_file + '\\' + log_file_name + "\n")
+    config_file.write("out = " + output_file + '\\' + output_file_name + "\n")
     config_file.close()
 
-    os.chdir(LOGS_FILE)
+    os.chdir(logs_file)
     open(log_file_name, 'w').close()
-    os.chdir(OUTPUT_FILE)
+    os.chdir(output_file)
     open(output_file_name, 'w').close()
 
     launch_vina()
 
 
 def launch_vina():
-    # subprocess.call(DATA_HOME + "\\veni_launch.bat")
-    os.chdir(DATA_HOME)
-    os.system('"C:\\Program Files (x86)\\The Scripps Research Institute\Vina\\vina.exe"' + ' --config conf.txt')
+    # subprocess.call(data_home + "\\veni_launch.bat")
+    os.chdir(data_home)
+    # os.system('"C:\\Program Files (x86)\\The Scripps Research Institute\Vina\\vina.exe"' + ' --config conf.txt')
+    os.system(vina_path + ' --config conf.txt')
 
 
 def run_selected_ligand(vina_conf_dict):
@@ -61,7 +71,7 @@ def run_selected_ligand(vina_conf_dict):
 
 
 def run_all_ligands(ui, vina_conf_dict):
-    os.chdir(DATA_HOME)
+    os.chdir(data_home)
     os.chdir('Ligands')
     ligand_list = fnmatch.filter(os.listdir(), '*.pdbqt')
     ligands_remaining = len(ligand_list)
