@@ -4,6 +4,7 @@ import os
 import fnmatch
 import runFunctions as runVina
 import directoryManager
+import errorMessageBoxes as showError
 
 
 class MainUi(QMainWindow):
@@ -71,7 +72,7 @@ class MainUi(QMainWindow):
                 directoryManager.set_config('vina_path', vina_file_path[0])
                 break
             else:
-                self.vina_error()
+                showError.vina_error()
                 _errors += 1
                 print('Incorrect File Chosen ' + str(5 - _errors) + ' trys remaining')
 
@@ -119,7 +120,7 @@ class MainUi(QMainWindow):
             self.cpu_set.setValue(int(_temp[6:-1]))
         except:
             print('Error with Populating Previous Data')
-            self.pop_error()
+            showError.pop_error()
 
     # If User Selects to Use Randomized Seeds, The field associated with a Seed Value is cleared
     def clear_seed_value(self):
@@ -132,7 +133,7 @@ class MainUi(QMainWindow):
     def check_entered_seed(self):
         if not (self.random_seed.isChecked()) and self.seed_value.text() == '':
             print('User needs to specify a seed(int) or select randomize seed')
-            self.seed_error()
+            showError.seed_error()
             return False
         else:
             return True
@@ -142,7 +143,7 @@ class MainUi(QMainWindow):
         if '' in [self.center_x.text(), self.center_y.text(), self.center_z.text(), self.size_z.text(),
                   self.size_y.text(), self.size_z.text(), self.exhaustiveness.text()]:
             print('One or more fields is empty Fields')
-            self.pop_error()
+            showError.pop_error()
             return True
         else:
             return False
@@ -182,28 +183,5 @@ class MainUi(QMainWindow):
             vina_conf = self.get_vina_conf_dict()
             runVina.run_all_ligands(self, vina_conf)
 
-    # Dealing with User Errors
-
-    # Informs user of error with populating previous configuration data
-    def pop_error(self):
-        _pop_error_msg = QMessageBox()
-        _pop_error_msg.setWindowTitle('Populate Previous Data Error')
-        _pop_error_msg.setText('Error with previous configuration file, please manually enter data')
-        _pop_error_msg.setIcon(_pop_error_msg.Warning)
-        _pop_error_msg.exec()
-
-    # Informs user of error with seed selection
-    def seed_error(self):
-        _seed_error_msg = QMessageBox()
-        _seed_error_msg.setWindowTitle('Seed Selection Error')
-        _seed_error_msg.setText('Please indicate either specific seed or random seed')
-        _seed_error_msg.setIcon(_seed_error_msg.Warning)
-        _seed_error_msg.exec()
-
-    def vina_error(self):
-        _vina_error_msg = QMessageBox()
-        _vina_error_msg.setWindowTitle('Error with Vina Path Selection')
-        _vina_error_msg.setText('Vina path was not selected correctly please locate vina.exe')
-        _vina_error_msg.exec()
 
 
