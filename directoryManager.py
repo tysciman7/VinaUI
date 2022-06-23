@@ -7,9 +7,9 @@ DATA_PATH = ''
 VINA_PATH = ''
 CONFIG_DATA = {}
 
-# Checks for existing config file
-# If it doesn't exist user is prompted for both data and vina paths
-# If it does exist, the config data is read from existing file
+''' Checks for existing config file
+ If it doesn't exist user is prompted for both data and vina paths
+ If it does exist, the config data is read from existing file'''
 def init_config(ui):
     os.chdir(PROJECT_HOME)
     if not os.path.exists(CONFIG_FILE_NAME):
@@ -21,7 +21,7 @@ def init_config(ui):
     init_data_directory()
 
 
-# Given an correct path element and the path itself, a config file is written and also stored in CONFIG_DATA variable
+# Given a correct path element and the path itself, a config file is written and also stored in CONFIG_DATA variable
 def set_config(element, _path):
     global CONFIG_DATA
     global DATA_PATH

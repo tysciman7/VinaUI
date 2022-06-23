@@ -32,11 +32,8 @@ class MainUi(QMainWindow):
         self.selected_ligand = self.findChild(QPushButton, 'run_selected_ligand_pushbutton')
         self.all_ligands = self.findChild(QPushButton, 'run_all_ligands_pushbutton')
 
-
-
         # Define Variables
         self.data_home = None
-
 
         # Button Actions
         self.refresh_lists.clicked.connect(lambda: self.pop_ligands())
@@ -46,9 +43,7 @@ class MainUi(QMainWindow):
         self.selected_ligand.clicked.connect(lambda: self.run_selected_ligand())
         self.all_ligands.clicked.connect(lambda: self.run_all_ligands())
 
-        # Show the App
-        # self.show()
-
+    # Initializes the data path and fills the receptor and ligand combo boxes with their respective directories
     def init_all(self):
         self.data_home = directoryManager.get_config('data_path')
         self.pop_receptors()

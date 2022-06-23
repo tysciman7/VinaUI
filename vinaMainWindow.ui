@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>520</width>
+    <width>521</width>
     <height>297</height>
    </rect>
   </property>
@@ -144,7 +144,7 @@
      <string>Run All Ligands</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -219,7 +219,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -228,7 +228,7 @@
       <height>101</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0" columnstretch="0,0">
+    <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0,0">
      <property name="sizeConstraint">
       <enum>QLayout::SetNoConstraint</enum>
      </property>
@@ -392,7 +392,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>520</width>
+     <width>521</width>
      <height>21</height>
     </rect>
    </property>
