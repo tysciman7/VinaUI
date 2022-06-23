@@ -1,19 +1,19 @@
 import sys
-import VinaUI
+import loadMainUI
 import directoryManager
 import runFunctions
 
 if __name__ == '__main__':
     # Initializes VinaUI Application
-    app = VinaUI.QtWidgets.QApplication(sys.argv)
-    MainWindow = VinaUI.QtWidgets.QMainWindow()
-    ui = VinaUI.Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
+    app = loadMainUI.QApplication(sys.argv)
+    MainWindow = loadMainUI.QMainWindow()
+    UIWindow = loadMainUI.MainUi()
+    UIWindow.show()
+
 
     # Initializes Config File and associated paths
-    directoryManager.init_config(ui)
-    ui.init_all()
+    directoryManager.init_config(UIWindow)
+    UIWindow.init_all()
     runFunctions.init_paths()
 
 
