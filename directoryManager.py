@@ -24,8 +24,6 @@ def init_config(ui):
     os.chdir(PROJECT_HOME)
     if (not os.path.exists(CONFIG_FILE_NAME)) or (os.path.getsize(CONFIG_FILE_NAME) <= 5):
         open(CONFIG_FILE_NAME, 'w').close()
-        # ui.initialize_data_path()
-        # ui.initialize_vina_path()
         ui.open_path_dialog()
     else:
         load_config()

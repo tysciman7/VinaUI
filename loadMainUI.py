@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QComboBox, QSpinBox, QCheckBox, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QComboBox, QSpinBox, QCheckBox, QPushButton, QAction
 from PyQt5 import uic
 import os
 import fnmatch
@@ -32,6 +32,7 @@ class MainUi(QMainWindow):
         self.populate_previous = self.findChild(QPushButton, 'populate_config_pushbutton')
         self.selected_ligand = self.findChild(QPushButton, 'run_selected_ligand_pushbutton')
         self.all_ligands = self.findChild(QPushButton, 'run_all_ligands_pushbutton')
+        self.reinit_paths = self.findChild(QAction, 'reconfigure_paths_action')
 
         # Define Variables
         self.data_home = None
@@ -43,6 +44,7 @@ class MainUi(QMainWindow):
         self.random_seed.stateChanged.connect(lambda: self.clear_seed_value())
         self.selected_ligand.clicked.connect(lambda: self.run_selected_ligand())
         self.all_ligands.clicked.connect(lambda: self.run_all_ligands())
+        self.reinit_paths.triggered.connect(lambda: self.open_path_dialog('reinit'))
 
     # Initializes the data path and fills the receptor and ligand combo boxes with their respective directories
     def init_all(self):
@@ -51,8 +53,8 @@ class MainUi(QMainWindow):
         self.pop_ligands()
 
     # Call PathDialog
-    def open_path_dialog(self):
-        PathDialog().exec()
+    def open_path_dialog(self, _call_type=None):
+        PathDialog(_call_type).exec()
         self.init_all()
 
 

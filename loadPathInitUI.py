@@ -7,7 +7,7 @@ import errorMessageBoxes as showError
 
 
 class PathDialog(QDialog):
-    def __init__(self):
+    def __init__(self, call_type=None):
         super(PathDialog, self).__init__()
 
         # Load pathDialog()
@@ -21,16 +21,18 @@ class PathDialog(QDialog):
         self.data_button = self.findChild(QPushButton, 'data_pushbutton')
         self.vina_button = self.findChild(QPushButton, 'vina_pushbutton')
 
+        # Something
+        if call_type is not None:
+            self.data_path.setText(directoryManager.get_config('data_path'))
+            self.vina_path.setText(directoryManager.get_config('vina_path'))
+
         # Widget Tips
 
         # Button Actions
         self.data_button.clicked.connect(lambda: self.data_path_search())
         self.vina_button.clicked.connect(lambda: self.vina_path_search())
         self.accepted.connect(lambda: self.pass_paths())
-        self.rejected.connect(lambda: showError.no_paths_init())
-
-        # Show Dialog
-        # self.show()
+        self.rejected.connect(lambda: self.dialog_cancel(call_type))
 
     def data_path_search(self):
         print('Data Path')
@@ -63,7 +65,6 @@ class PathDialog(QDialog):
             self.vina_path.clear()
             self.show()
 
-
-# app = QApplication(sys.argv)
-# dialog = PathDialog()
-# app.exec()
+    def dialog_cancel(self, _call_type):
+        if _call_type is None:
+            showError.no_paths_init()
