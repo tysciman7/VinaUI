@@ -1,3 +1,5 @@
+import sys
+
 from PyQt5.QtWidgets import QMessageBox
 
 # Dealing with User Errors
@@ -32,4 +34,6 @@ def no_paths_init():
     _no_path_error_msg = QMessageBox()
     _no_path_error_msg.setWindowTitle('No Paths Initialized')
     _no_path_error_msg.setText('This program will not run without first initializing the paths')
+    _no_path_error_msg.setIcon(_no_path_error_msg.Critical)
     _no_path_error_msg.exec()
+    sys.exit()

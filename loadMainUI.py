@@ -1,10 +1,11 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication,  QLineEdit, QComboBox, QSpinBox, QCheckBox, QPushButton, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QComboBox, QSpinBox, QCheckBox, QPushButton
 from PyQt5 import uic
 import os
 import fnmatch
 import runFunctions as runVina
 import directoryManager
 import errorMessageBoxes as showError
+from loadPathInitUI import PathDialog
 
 
 class MainUi(QMainWindow):
@@ -49,27 +50,11 @@ class MainUi(QMainWindow):
         self.pop_receptors()
         self.pop_ligands()
 
-    # Initialize Config File to contain data dir and call functions associated with building internal data dirs
-    def initialize_data_path(self):
-        self.dirInit.exec()
-        # Note: Add a third arg to specify where the file search begins (so here put PROJECT_HOME)
-        data_dir_path = QFileDialog.getExistingDirectory(self.centralwidget, 'Please Choose a Directory for Data to accessed/ stored')
-        directoryManager.set_config('data_path', data_dir_path)
+    # Call PathDialog
+    def open_path_dialog(self):
+        PathDialog().exec()
+        self.init_all()
 
-    # Initializes Vina path, gives user 5 trys before stopping
-    def initialize_vina_path(self):
-        self.vinaInit.exec()
-        _errors = 0
-        while _errors <= 4:
-            vina_file_path = QFileDialog.getOpenFileName(self.centralwidget, 'Please Select Vina.exe')
-            if str(vina_file_path[0][-8:]) == "vina.exe":
-                print('Correct File Found')
-                directoryManager.set_config('vina_path', vina_file_path[0])
-                break
-            else:
-                showError.vina_error()
-                _errors += 1
-                print('Incorrect File Chosen ' + str(5 - _errors) + ' trys remaining')
 
     # Fills the Ligand List with Ligands within Respective Directory
     def pop_ligands(self):

@@ -2,8 +2,12 @@ import sys
 import loadMainUI
 import directoryManager
 import runFunctions
+import os
 
 if __name__ == '__main__':
+    # Initialize Project Home Path
+    directoryManager.set_project_path(os.getcwd())
+
     # Initializes VinaUI Application
     app = loadMainUI.QApplication(sys.argv)
     MainWindow = loadMainUI.QMainWindow()
