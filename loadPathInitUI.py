@@ -50,12 +50,6 @@ class PathDialog(QDialog):
             showError.vina_error()
             print('Incorrect File Chosen')
 
-    def check_vina_path(self, _path):
-        if str(_path[-8:]) == "vina.exe":
-            return True
-        else:
-            return False
-
     def pass_paths(self):
         directoryManager.set_config('data_path', self.data_path.text())
         if self.check_vina_path(self.vina_path.text()):
@@ -65,6 +59,14 @@ class PathDialog(QDialog):
             self.vina_path.clear()
             self.show()
 
-    def dialog_cancel(self, _call_type):
-        if _call_type is None:
-            showError.no_paths_init()
+
+def check_vina_path(self, _path):
+    if str(_path[-8:]) == "vina.exe":
+        return True
+    else:
+        return False
+
+
+def dialog_cancel(self, _call_type):
+    if _call_type is None:
+        showError.no_paths_init()
