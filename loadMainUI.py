@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QComboBox, QSpinBox, QCheckBox, QPushButton, QAction
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QComboBox, QSpinBox, QCheckBox, QPushButton, QAction, QStatusBar
 from PyQt5 import uic
 import os
 import fnmatch
@@ -33,6 +33,7 @@ class MainUi(QMainWindow):
         self.selected_ligand = self.findChild(QPushButton, 'run_selected_ligand_pushbutton')
         self.all_ligands = self.findChild(QPushButton, 'run_all_ligands_pushbutton')
         self.reinit_paths = self.findChild(QAction, 'reconfigure_paths_action')
+        self.status_bar = self.findChild(QStatusBar, 'statusbar')
 
         # Define Variables
         self.data_home = None
@@ -56,7 +57,6 @@ class MainUi(QMainWindow):
     def open_path_dialog(self, _call_type=None):
         PathDialog(_call_type).exec()
         self.init_all()
-
 
     # Fills the Ligand List with Ligands within Respective Directory
     def pop_ligands(self):
@@ -162,8 +162,14 @@ class MainUi(QMainWindow):
         if not (self.check_entered_seed()) or self.check_empty_fields():
             return
         else:
+            self.status_bar.showMessage('Time Remaining: ')
+            self.status_bar.repaint()
             vina_conf = self.get_vina_conf_dict()
             runVina.run_all_ligands(self, vina_conf)
+
+    def update_time_remaining(self, _time):
+        self.status_bar.showMessage('Time Remaining: ' + f"{_time:.3f}")
+        self.status_bar.repaint()
 
 
 
