@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QComboBox, QSpinBox, QCheckBox, QPushButton, QAction, QStatusBar
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QComboBox, QSpinBox, QCheckBox, QPushButton, QAction, QStatusBar, QFileDialog
 from PyQt5 import uic
 import os
 import fnmatch
@@ -6,6 +6,7 @@ import runFunctions as runVina
 import directoryManager
 import errorMessageBoxes as showError
 from loadPathInitUI import PathDialog
+import sortData
 
 
 class MainUi(QMainWindow):
@@ -35,6 +36,9 @@ class MainUi(QMainWindow):
         self.reinit_paths = self.findChild(QAction, 'reconfigure_paths_action')
         self.status_bar = self.findChild(QStatusBar, 'statusbar')
 
+        # Temp Sort Button
+        self.sort_button = self.findChild(QPushButton, 'sort_button')
+
         # Define Variables
         self.data_home = None
 
@@ -46,6 +50,14 @@ class MainUi(QMainWindow):
         self.selected_ligand.clicked.connect(lambda: self.run_selected_ligand())
         self.all_ligands.clicked.connect(lambda: self.run_all_ligands())
         self.reinit_paths.triggered.connect(lambda: self.open_path_dialog('reinit'))
+
+        # Temp Sort Button
+        self.sort_button.clicked.connect(lambda: self.sort_function())
+    # Temp Sort Button Call
+    def sort_function(self):
+        _log_path = QFileDialog.getExistingDirectory(self, 'Log Path')
+        sortData.sort_log_data(_log_path)
+
 
     # Initializes the data path and fills the receptor and ligand combo boxes with their respective directories
     def init_all(self):
