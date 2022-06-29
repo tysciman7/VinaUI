@@ -55,7 +55,7 @@ class PathDialog(QDialog):
         self.output_button.clicked.connect(lambda: self.output_path_search())
         self.receptor_button.clicked.connect(lambda: self.log_path_search())
         self.accepted.connect(lambda: self.pass_paths())
-        self.rejected.connect(lambda: self.dialog_cancel(call_type))
+        self.rejected.connect(lambda: dialog_cancel(call_type))
 
     def vina_path_search(self):
         print('Vina path')
