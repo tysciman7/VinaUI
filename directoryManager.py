@@ -3,9 +3,15 @@ import json
 
 PROJECT_HOME = ''
 CONFIG_FILE_NAME = 'CONFIG.json'
-DATA_PATH = ''
-VINA_PATH = ''
-CONFIG_DATA = {}
+
+CONFIG_DATA = {
+    'vina_path': None,
+    'data_path': None,
+    'ligand_path': None,
+    'receptor_path': None,
+    'output_path': None,
+    'log_path': None,
+}
 
 
 def set_project_path(_path):
@@ -33,24 +39,16 @@ def init_config(ui):
 # Given a correct path element and the path itself, a config file is written and also stored in CONFIG_DATA variable
 def set_config(element, _path):
     global CONFIG_DATA
-    global DATA_PATH
-    global VINA_PATH
-    if element == 'data_path':
-        DATA_PATH = _path
-    elif element == 'vina_path':
-        VINA_PATH = _path
+
+    if element in CONFIG_DATA.keys():
+        CONFIG_DATA[element] = _path
     else:
         print('Error with specified element:' + element)
         return -2
 
-    if '' in [DATA_PATH, VINA_PATH]:
+    if '' in CONFIG_DATA.values():
         print('One of the paths was not specified')
         return -3
-
-    CONFIG_DATA = {
-        'data_path': DATA_PATH,
-        'vina_path': VINA_PATH
-    }
 
     os.chdir(PROJECT_HOME)
     with open(CONFIG_FILE_NAME, 'w') as _config_file:
@@ -76,14 +74,13 @@ def get_config(element):
 
 # Checks root data directory for each directory associated with accessed / stored data
 def init_data_directory():
-    os.chdir(get_config('data_path'))
-    if not os.path.isdir('Ligands'):
-        os.mkdir('Ligands')
-    if not os.path.isdir('Receptors'):
-        os.mkdir('Receptors')
-    if not os.path.isdir('Ligand Outputs'):
-        os.mkdir('Ligand Outputs')
-    if not os.path.isdir('Logs'):
-        os.mkdir('Logs')
+    if not os.path.isdir(CONFIG_DATA['ligand_path']):
+        os.mkdir(CONFIG_DATA['ligand_path'])
+    if not os.path.isdir(CONFIG_DATA['receptor_path']):
+        os.mkdir(CONFIG_DATA['receptor_path'])
+    if not os.path.isdir(CONFIG_DATA['output_path']):
+        os.mkdir(CONFIG_DATA['output_path'])
+    if not os.path.isdir(CONFIG_DATA['log_path']):
+        os.mkdir(CONFIG_DATA['log_path'])
 
 

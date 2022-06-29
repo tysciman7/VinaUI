@@ -37,3 +37,11 @@ def no_paths_init():
     _no_path_error_msg.setIcon(_no_path_error_msg.Critical)
     _no_path_error_msg.exec()
     sys.exit()
+
+
+def no_data_path_specified():
+    _no_data_path_msg = QMessageBox()
+    _no_data_path_msg.setWindowTitle('No Data Path Specified')
+    _no_data_path_msg.setText('Please Specify a Data Path')
+    _no_data_path_msg.setIcon(_no_data_path_msg.Warning)
+    _no_data_path_msg.exec()

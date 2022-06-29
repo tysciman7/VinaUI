@@ -74,8 +74,7 @@ class MainUi(QMainWindow):
     def pop_ligands(self):
         print('Populating Ligand List')
         self.ligand_list.clear()
-        os.chdir(self.data_home)
-        os.chdir('Ligands')
+        os.chdir(directoryManager.get_config('ligand_path'))
         _ligand_list = fnmatch.filter(os.listdir(), '*.pdbqt')
         self.ligand_list.addItems(_ligand_list)
         # self.total_ligand_value.setText(str(len(_ligand_list)))
@@ -84,8 +83,7 @@ class MainUi(QMainWindow):
     def pop_receptors(self):
         print('Populating Receptor List')
         self.receptor_list.clear()
-        os.chdir(self.data_home)
-        os.chdir('Receptors')
+        os.chdir(directoryManager.get_config('receptor_path'))
         _receptor_list = fnmatch.filter(os.listdir(), '*.pdbqt')
         self.receptor_list.addItems(_receptor_list)
 
