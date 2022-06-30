@@ -45,3 +45,19 @@ def no_data_path_specified():
     _no_data_path_msg.setText('Please Specify a Data Path')
     _no_data_path_msg.setIcon(_no_data_path_msg.Warning)
     _no_data_path_msg.exec()
+
+
+def no_ligands():
+    _no_ligands = QMessageBox()
+    _no_ligands.setWindowTitle('No Ligands Available')
+    _no_ligands.setText('No ligands are in selected directory')
+    _no_ligands.setIcon(_no_ligands.Warning)
+    _no_ligands.exec()
+
+
+def no_output_path():
+    _no_output = QMessageBox()
+    _no_output.setWindowTitle('No Output Specified')
+    _no_output.setText('Please Specify an Output File')
+    _no_output.setIcon(_no_output.Warning)
+    _no_output.exec()

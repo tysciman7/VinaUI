@@ -7,11 +7,13 @@ import directoryManager
 
 # Creates Configuration File then runs Vina
 def create_conf(vina_conf_dict):
-    os.chdir(directoryManager.get_config('data_path'))
+    _data_path = directoryManager.get_config('data_path')
     _ligand_path = directoryManager.get_config('ligand_path')
     _receptor_path = directoryManager.get_config('receptor_path')
     _output_path = directoryManager.get_config('output_path')
     _log_path = directoryManager.get_config('log_path')
+
+    os.chdir(_data_path)
 
     receptor, ligand, center_x, center_y, center_z, size_x, size_y, size_z, exhaustiveness, seed, cpu_value = vina_conf_dict.values()
 
@@ -24,6 +26,7 @@ def create_conf(vina_conf_dict):
     log_file_name = ligand_name + '+' + receptor_name + '_' + current_date_time + '_log.txt'
     output_file_name = ligand_name + '+' + receptor_name + '_' + current_date_time + "_output.pdbqt"
 
+    os.chdir(_data_path)
     config_file = open("conf.txt", "w")
     config_file.write("receptor = " + _receptor_path + "\\" + receptor + "\n")
     config_file.write("ligand = " + _ligand_path + "\\" + ligand + "\n")
@@ -51,10 +54,10 @@ def create_conf(vina_conf_dict):
 
 # Runs vina
 def launch_vina():
-    os.chdir(directoryManager.get_config('data_path'))
     _vina_path = directoryManager.get_config('vina_path')
     _vina_path = os.path.normpath(_vina_path)
     _vina_path = "\"" + _vina_path + "\""
+    os.chdir(directoryManager.get_config('data_path'))
     os.system(_vina_path + ' --config conf.txt')
 
 
@@ -64,7 +67,7 @@ def run_selected_ligand(vina_conf_dict):
 
 
 # Runs all ligands contained in the ligands directory
-def run_all_ligands(ui, vina_conf_dict):
+def run_all_ligands(main_ui, vina_conf_dict):
     os.chdir(directoryManager.get_config('ligand_path'))
     ligand_list = fnmatch.filter(os.listdir(), '*.pdbqt')
     ligands_remaining = len(ligand_list)
@@ -76,7 +79,7 @@ def run_all_ligands(ui, vina_conf_dict):
         time_inst = toc - tic
         time_remaining = time_inst * ligands_remaining
         print('Time Remaining: ' + str(time_remaining) + 'seconds')
-        ui.update_time_remaining(time_remaining)
+        main_ui.update_time_remaining(time_remaining)
         ligands_remaining -= 1
 
 

@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import datetime
 
 PROJECT_HOME = ''
 CONFIG_FILE_NAME = 'CONFIG.json'
@@ -26,6 +27,8 @@ def get_project_path():
 ''' Checks for existing config file
  If it doesn't exist user is prompted for both data and vina paths
  If it does exist, the config data is read from existing file'''
+
+
 def init_config(ui):
     os.chdir(PROJECT_HOME)
     if (not os.path.exists(CONFIG_FILE_NAME)) or (os.path.getsize(CONFIG_FILE_NAME) <= 5):
@@ -37,7 +40,7 @@ def init_config(ui):
 
 
 # Given a correct path element and the path itself, a config file is written and also stored in CONFIG_DATA variable
-def set_config(element, _path):
+def set_config(element, _path, _temp=False):
     global CONFIG_DATA
 
     if element in CONFIG_DATA.keys():
@@ -45,6 +48,9 @@ def set_config(element, _path):
     else:
         print('Error with specified element:' + element)
         return -2
+
+    if _temp:
+        return 1
 
     if '' in CONFIG_DATA.values():
         print('One of the paths was not specified')
@@ -84,3 +90,8 @@ def init_data_directory():
         os.mkdir(CONFIG_DATA['log_path'])
 
 
+def get_current_date_time():
+    _current_date_time = str(datetime.now())
+    _current_date_time = _current_date_time.replace(':', '.')
+    _current_date_time = _current_date_time[0:-7]
+    return _current_date_time

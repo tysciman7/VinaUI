@@ -1,13 +1,6 @@
-from datetime import datetime
 import os
 import fnmatch
-
-
-def get_current_date_time():
-    _current_date_time = str(datetime.now())
-    _current_date_time = _current_date_time.replace(':', '.')
-    _current_date_time = _current_date_time[0:-7]
-    return _current_date_time
+import directoryManager as dirMang
 
 
 def get_log_data(_path, _log_file):
@@ -32,7 +25,7 @@ def get_log_data(_path, _log_file):
     return _log_data
 
 
-def sort_log_data(_log_path):
+def sort_log_data(_log_path, _call_type=None):
     os.chdir(_log_path)
     _log_filename_list = fnmatch.filter(os.listdir(), '*.txt')
     _log_list = []
@@ -46,7 +39,10 @@ def sort_log_data(_log_path):
 
     _log_list.sort(key=lambda x: float(x['binding_affinity']))
 
-    with open('SORTED LIST ' + str(get_current_date_time()) + '.txt', 'w') as _sorted_file:
+    if _call_type is None:
+        os.chdir('..')
+
+    with open('SORTED LIST ' + str(dirMang.get_current_date_time()) + '.txt', 'w') as _sorted_file:
         _sorted_file.write('Ligand | Binding Affinity' + '\n')
         for _data in _log_list:
             _sorted_file.write(_data['ligand_name'] + '\t\t' + _data['binding_affinity'] + '\n')

@@ -7,6 +7,7 @@ import directoryManager
 import errorMessageBoxes as showError
 from loadPathInitUI import PathDialog
 import sortData
+from loadRunAllLigandsDialog import RunAllLigandsDialog
 
 
 class MainUi(QMainWindow):
@@ -34,10 +35,9 @@ class MainUi(QMainWindow):
         self.selected_ligand = self.findChild(QPushButton, 'run_selected_ligand_pushbutton')
         self.all_ligands = self.findChild(QPushButton, 'run_all_ligands_pushbutton')
         self.reinit_paths = self.findChild(QAction, 'reconfigure_paths_action')
+        self.sort_existing = self.findChild(QAction, 'sort_existing_action')
         self.status_bar = self.findChild(QStatusBar, 'statusbar')
 
-        # Temp Sort Button
-        self.sort_button = self.findChild(QPushButton, 'sort_button')
 
         # Define Variables
         self.data_home = None
@@ -50,13 +50,14 @@ class MainUi(QMainWindow):
         self.selected_ligand.clicked.connect(lambda: self.run_selected_ligand())
         self.all_ligands.clicked.connect(lambda: self.run_all_ligands())
         self.reinit_paths.triggered.connect(lambda: self.open_path_dialog('reinit'))
+        self.sort_existing.triggered.connect(lambda: self.sort_existing_logs())
 
-        # Temp Sort Button
-        self.sort_button.clicked.connect(lambda: self.sort_function())
-    # Temp Sort Button Call
-    def sort_function(self):
+    # Sort Button Call
+    def sort_existing_logs(self):
         _log_path = QFileDialog.getExistingDirectory(self, 'Log Path')
-        sortData.sort_log_data(_log_path)
+        if _log_path == '':
+            return -1
+        sortData.sort_log_data(_log_path, 'main')
 
 
     # Initializes the data path and fills the receptor and ligand combo boxes with their respective directories
@@ -174,8 +175,9 @@ class MainUi(QMainWindow):
         else:
             self.status_bar.showMessage('Time Remaining: ')
             self.status_bar.repaint()
-            vina_conf = self.get_vina_conf_dict()
-            runVina.run_all_ligands(self, vina_conf)
+            _vina_conf = self.get_vina_conf_dict()
+            RunAllLigandsDialog(self, _vina_conf).exec()
+            # runVina.run_all_ligands(self, _vina_conf)
 
     def update_time_remaining(self, _time):
         self.status_bar.showMessage('Time Remaining: ' + f"{_time:.3f}")

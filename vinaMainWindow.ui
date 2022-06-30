@@ -319,19 +319,6 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="sort_button">
-    <property name="geometry">
-     <rect>
-      <x>410</x>
-      <y>210</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Sort</string>
-    </property>
-   </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
@@ -342,6 +329,9 @@
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
      <item>
       <widget class="QPushButton" name="refresh_list_pushbutton">
        <property name="toolTip">
@@ -402,6 +392,8 @@
      <string>Config</string>
     </property>
     <addaction name="reconfigure_paths_action"/>
+    <addaction name="separator"/>
+    <addaction name="sort_existing_action"/>
    </widget>
    <addaction name="menuConfig"/>
   </widget>
@@ -423,7 +415,12 @@
   </action>
   <action name="reconfigure_paths_action">
    <property name="text">
-    <string>Reconfigure Data and Vina Paths</string>
+    <string>Reconfigure Paths</string>
+   </property>
+  </action>
+  <action name="sort_existing_action">
+   <property name="text">
+    <string>Sort Existing Log Directory</string>
    </property>
   </action>
  </widget>

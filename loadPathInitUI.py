@@ -3,13 +3,13 @@ from PyQt5 import uic
 import os
 
 import directoryManager
-import errorMessageBoxes
 import errorMessageBoxes as showError
 
 
 class PathDialog(QDialog):
     def __init__(self, call_type=None):
         super(PathDialog, self).__init__()
+
 
         # Load pathDialog()
         os.chdir(directoryManager.get_project_path())
@@ -53,7 +53,7 @@ class PathDialog(QDialog):
         self.ligand_button.clicked.connect(lambda: self.ligand_path_search())
         self.receptor_button.clicked.connect(lambda: self.receptor_path_search())
         self.output_button.clicked.connect(lambda: self.output_path_search())
-        self.receptor_button.clicked.connect(lambda: self.log_path_search())
+        self.log_button.clicked.connect(lambda: self.log_path_search())
         self.accepted.connect(lambda: self.pass_paths())
         self.rejected.connect(lambda: dialog_cancel(call_type))
 
@@ -89,7 +89,7 @@ class PathDialog(QDialog):
     def sub_paths_init(self):
         if self.data_path.text() == '':
             print('No Data Path Specified')
-            errorMessageBoxes.no_data_path_specified()
+            showError.no_data_path_specified()
             return -4
 
         _ligand_path = os.path.join(self.data_path.text(), 'Ligands')
