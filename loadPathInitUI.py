@@ -57,6 +57,7 @@ class PathDialog(QDialog):
         self.accepted.connect(lambda: self.pass_paths())
         self.rejected.connect(lambda: dialog_cancel(call_type))
 
+    # Prompts user to provide a path for vina.exe
     def vina_path_search(self):
         print('Vina path')
         _vina_file_path = QFileDialog.getOpenFileName(self, 'Please Select Vina.exe')
@@ -67,6 +68,7 @@ class PathDialog(QDialog):
             showError.vina_error()
             print('Incorrect File Chosen')
 
+    # Prompts user to provide a path for a main data directory
     def data_path_search(self):
         print('Data Path Search')
         _data_dir_path = QFileDialog.getExistingDirectory(self,
@@ -74,6 +76,7 @@ class PathDialog(QDialog):
         self.data_path.setText(_data_dir_path)
         self.sub_paths_init()
 
+    # Depending on the state of the Sub Path checkbox, the fields are either enabled or disabled
     def sub_paths_check(self):
         if self.sub_paths_checkbox.isChecked():
             print('Enable Sub Path Editing')
@@ -86,6 +89,7 @@ class PathDialog(QDialog):
             [button.setEnabled(False) for button in self.sub_path_group.findChildren(QPushButton)]
             self.sub_paths_init()
 
+    # User must define a data path first so that sub paths can be filled, users then may change these paths
     def sub_paths_init(self):
         if self.data_path.text() == '':
             print('No Data Path Specified')
@@ -102,30 +106,35 @@ class PathDialog(QDialog):
         self.output_path.setText(_output_path)
         self.log_path.setText(_log_path)
 
+    # Prompts user to provide a path to ligand directory
     def ligand_path_search(self):
         print('Ligand Path Search')
         _ligand_dir_path = QFileDialog.getExistingDirectory(self,
                                                             'Please Choose a Directory for Ligands to accessed')
         self.ligand_path.setText(_ligand_dir_path)
 
+    # Prompts user to provide a path to receptor directory
     def receptor_path_search(self):
         print('Receptor Path Search')
         _receptor_dir_path = QFileDialog.getExistingDirectory(self,
                                                               'Please Choose a Directory for Receptors to accessed')
         self.receptor_path.setText(_receptor_dir_path)
 
+    # Prompts user to provide a path to output directory
     def output_path_search(self):
         print('Output Path Search')
         _output_dir_path = QFileDialog.getExistingDirectory(self,
                                                             'Please Choose a Directory for Output to accessed / stored')
         self.output_path.setText(_output_dir_path)
 
+    # Prompts user to provide a path to log directory
     def log_path_search(self):
         print('Log Path Search')
         _log_dir_path = QFileDialog.getExistingDirectory(self,
                                                          'Please Choose a Directory for Logs to accessed / stored')
         self.log_path.setText(_log_dir_path)
 
+    # Passes paths specified in each field to directory to be dumped to CONFIG.json
     def pass_paths(self):
         directoryManager.set_config('data_path', self.data_path.text())
         directoryManager.set_config('ligand_path', self.ligand_path.text())

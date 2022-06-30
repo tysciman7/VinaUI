@@ -44,6 +44,7 @@ class RunAllLigandsDialog(QDialog):
         self.accepted.connect(lambda: self.run())
         self.rejected.connect(lambda: cancel_all())
 
+    # Populates ligand combobox with given ligand path files and updates the ligand counter
     def set_ligands(self, _ligand_path):
         self.ligand_list.clear()
         os.chdir(_ligand_path)
@@ -51,6 +52,7 @@ class RunAllLigandsDialog(QDialog):
         self.ligand_list.addItems(_ligand_list)
         self.total_ligands.setText(str(len(_ligand_list)))
 
+    # Prompts user to specify a path for ligands to temporarily be used during this vina run
     def ligand_path_search(self):
         print('Ligand Path Search')
         _ligand_dir_path = QFileDialog.getExistingDirectory(self,
@@ -61,6 +63,7 @@ class RunAllLigandsDialog(QDialog):
         self.set_ligands(_ligand_dir_path)
         directoryManager.set_config('ligand_path', _ligand_dir_path, True)
 
+    # Prompts user to specify a path for output of the current vina run (if user specifies a sort to be done)
     def output_path_search(self):
         print('Output Path Search')
         _output_dir_path = QFileDialog.getExistingDirectory(self,
@@ -70,6 +73,7 @@ class RunAllLigandsDialog(QDialog):
         self.log_path = os.path.join(self.output_parent_path, 'Log')
         self.output_path_input.setText(self.output_parent_path)
 
+    # Changes the output inputs to be enabled or not given the bool
     def output_enabled(self, _enabled):
         if not _enabled:
             self.output_path_input.clear()
@@ -77,12 +81,14 @@ class RunAllLigandsDialog(QDialog):
         self.output_path_button.setEnabled(_enabled)
         self.output_path_label.setEnabled(_enabled)
 
+    # Checks the sort checkbox
     def sort_check(self):
         if not self.sort_checkbox.isChecked():
             self.output_enabled(False)
         else:
             self.output_enabled(True)
 
+    # Checks for errors, if sorting is enabled, then runs vina
     def run(self):
         if len(self.ligand_list) == 0:
             print('No Ligands in Chosen Directory')
@@ -107,6 +113,6 @@ class RunAllLigandsDialog(QDialog):
             _conf_path = os.path.join(directoryManager.get_config('data_path'), 'conf.txt')
             copy2(_conf_path, self.output_parent_path)
 
-
+# If user decides to cancel the run, then all previous paths are restored
 def cancel_all():
     directoryManager.load_config()

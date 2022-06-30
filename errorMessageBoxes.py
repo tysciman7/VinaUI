@@ -23,6 +23,7 @@ def seed_error():
     _seed_error_msg.exec()
 
 
+# Informs user that they have not specified a correct vina path
 def vina_error():
     _vina_error_msg = QMessageBox()
     _vina_error_msg.setWindowTitle('Error with Vina Path Selection')
@@ -30,6 +31,7 @@ def vina_error():
     _vina_error_msg.exec()
 
 
+# Informs user that they must specify paths or vina will be unable to run
 def no_paths_init():
     _no_path_error_msg = QMessageBox()
     _no_path_error_msg.setWindowTitle('No Paths Initialized')
@@ -39,6 +41,7 @@ def no_paths_init():
     sys.exit()
 
 
+# Informs user that they must first specify a data path before continuing below
 def no_data_path_specified():
     _no_data_path_msg = QMessageBox()
     _no_data_path_msg.setWindowTitle('No Data Path Specified')
@@ -47,6 +50,7 @@ def no_data_path_specified():
     _no_data_path_msg.exec()
 
 
+# Informs user that the selected directory has no ligands within
 def no_ligands():
     _no_ligands = QMessageBox()
     _no_ligands.setWindowTitle('No Ligands Available')
@@ -55,6 +59,7 @@ def no_ligands():
     _no_ligands.exec()
 
 
+# Informs user that they have not specified an output directory
 def no_output_path():
     _no_output = QMessageBox()
     _no_output.setWindowTitle('No Output Specified')

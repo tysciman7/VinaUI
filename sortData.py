@@ -3,6 +3,7 @@ import fnmatch
 import directoryManager as dirMang
 
 
+# Grabs data from specified log file, stores data in dict
 def get_log_data(_path, _log_file):
     os.chdir(_path)
     with open(_log_file, 'r') as _file:
@@ -25,6 +26,7 @@ def get_log_data(_path, _log_file):
     return _log_data
 
 
+# Given the path to the log data, the function sorts the data based on binding affinity and stores it based on which window calls it
 def sort_log_data(_log_path, _call_type=None):
     os.chdir(_log_path)
     _log_filename_list = fnmatch.filter(os.listdir(), '*.txt')

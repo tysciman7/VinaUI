@@ -27,8 +27,6 @@ def get_project_path():
 ''' Checks for existing config file
  If it doesn't exist user is prompted for both data and vina paths
  If it does exist, the config data is read from existing file'''
-
-
 def init_config(ui):
     os.chdir(PROJECT_HOME)
     if (not os.path.exists(CONFIG_FILE_NAME)) or (os.path.getsize(CONFIG_FILE_NAME) <= 5):

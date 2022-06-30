@@ -52,7 +52,7 @@ class MainUi(QMainWindow):
         self.reinit_paths.triggered.connect(lambda: self.open_path_dialog('reinit'))
         self.sort_existing.triggered.connect(lambda: self.sort_existing_logs())
 
-    # Sort Button Call
+    # Prompts user to specify a directory to sort older/ existing log files
     def sort_existing_logs(self):
         _log_path = QFileDialog.getExistingDirectory(self, 'Log Path')
         if _log_path == '':
@@ -179,6 +179,7 @@ class MainUi(QMainWindow):
             RunAllLigandsDialog(self, _vina_conf).exec()
             # runVina.run_all_ligands(self, _vina_conf)
 
+    # Updates status bar with a time remaining on a vina run
     def update_time_remaining(self, _time):
         self.status_bar.showMessage('Time Remaining: ' + f"{_time:.3f}")
         self.status_bar.repaint()
