@@ -59,7 +59,6 @@ class MainUi(QMainWindow):
             return -1
         sortData.sort_log_data(_log_path, 'main')
 
-
     # Initializes the data path and fills the receptor and ligand combo boxes with their respective directories
     def init_all(self):
         self.data_home = directoryManager.get_config('data_path')

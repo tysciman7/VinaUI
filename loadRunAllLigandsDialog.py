@@ -113,6 +113,7 @@ class RunAllLigandsDialog(QDialog):
             _conf_path = os.path.join(directoryManager.get_config('data_path'), 'conf.txt')
             copy2(_conf_path, self.output_parent_path)
 
+
 # If user decides to cancel the run, then all previous paths are restored
 def cancel_all():
     directoryManager.load_config()

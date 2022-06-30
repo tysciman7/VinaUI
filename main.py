@@ -17,7 +17,6 @@ if __name__ == '__main__':
     directoryManager.init_config(UIWindow)
     UIWindow.init_all()
 
-
     # Ends Application
     sys.exit(app.exec_())
 

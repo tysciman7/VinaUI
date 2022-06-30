@@ -358,7 +358,7 @@
      <item>
       <widget class="QPushButton" name="run_all_ligands_pushbutton">
        <property name="toolTip">
-        <string>Runs all ligands currently within the ligand directory.</string>
+        <string>Runs all ligands with the entered configuration data.</string>
        </property>
        <property name="text">
         <string>Run All Ligands</string>

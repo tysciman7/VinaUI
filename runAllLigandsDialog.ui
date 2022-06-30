@@ -100,6 +100,9 @@
      <height>17</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>Unselected: Data will be stored in standard directories. Selected: Path will need to be specified for output data of all run ligands.</string>
+   </property>
    <property name="text">
     <string>Sort Data after running</string>
    </property>
