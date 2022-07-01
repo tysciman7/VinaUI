@@ -48,9 +48,11 @@ def create_conf(vina_conf_dict):
 # Runs vina
 def launch_vina(_conf_path):
     _vina_path = directoryManager.get_config('vina_path')
-    error = subprocess.run([_vina_path, '--config', _conf_path], capture_output=True)
-    # Substring this error
-    showError.vina_error_stder(error.stderr)
+    subprocess.run([_vina_path, '--config', _conf_path], encoding='utf-8')
+
+    # if run_output > 0:
+    #     # Substring this error
+    #     showError.vina_error_stder(run_output.stderr)
 
 
 # Runs user selected ligand
