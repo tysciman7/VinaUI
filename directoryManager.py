@@ -56,7 +56,7 @@ def set_config(element, _path, _temp=False):
 
     os.chdir(PROJECT_HOME)
     with open(CONFIG_FILE_NAME, 'w') as _config_file:
-        json.dump(CONFIG_DATA, _config_file)
+        json.dump(CONFIG_DATA, _config_file, indent=2)
 
 
 # Loads paths from config file to config variable
