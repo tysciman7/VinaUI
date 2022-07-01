@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QLineEdit, QPushButton, QFileDialog, QDialog, QCheckBox, QGroupBox, QLabel
 from PyQt5 import uic
 import os
+from pathlib import Path
 
 import directoryManager
 import errorMessageBoxes as showError
@@ -151,10 +152,8 @@ class PathDialog(QDialog):
 
 
 def check_vina_path(_path):
-    if str(_path[-8:]) == "vina.exe":
-        return True
-    else:
-        return False
+    path = Path(_path)
+    return path.stem == "vina"
 
 
 def dialog_cancel(_call_type):
