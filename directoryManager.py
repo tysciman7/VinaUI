@@ -74,6 +74,7 @@ def get_config(element):
         return CONFIG_DATA[element]
     else:
         print('Unknown element entered')
+        return -7
 
 
 # Checks root data directory for each directory associated with accessed / stored data

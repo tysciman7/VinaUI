@@ -66,3 +66,10 @@ def no_output_path():
     _no_output.setText('Please Specify an Output File')
     _no_output.setIcon(_no_output.Warning)
     _no_output.exec()
+
+def vina_error_stder(error):
+    vina_stder= QMessageBox()
+    vina_stder.setWindowTitle('Error')
+    vina_stder.setText('Vina Error: ' + str(error))
+    vina_stder.setIcon(vina_stder.Warning)
+    vina_stder.exec()

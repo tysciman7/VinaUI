@@ -38,6 +38,8 @@ class MainUi(QMainWindow):
         self.sort_existing = self.findChild(QAction, 'sort_existing_action')
         self.status_bar = self.findChild(QStatusBar, 'statusbar')
 
+        # Bounds CPU Core selection
+        self.cpu_set.setRange(1, os.cpu_count())
 
         # Define Variables
         self.data_home = None
