@@ -23,6 +23,23 @@ def seed_error():
     _seed_error_msg.exec()
 
 
+# Informs the user of blank lineedit within conf data
+def blank_field(field):
+    blank_error = QMessageBox()
+    blank_error.setWindowTitle('Blank Field Encountered')
+    blank_error.setText(field + ' cannot be blank')
+    blank_error.setIcon(blank_error.Warning)
+    blank_error.exec()
+
+
+def non_int(field):
+    non_int_error = QMessageBox()
+    non_int_error.setWindowTitle('Non-Integer Field Encountered')
+    non_int_error.setText(field + ' can only contain integers')
+    non_int_error.setIcon(non_int_error.Warning)
+    non_int_error.exec()
+
+
 # Informs user that they have not specified a correct vina path
 def vina_error():
     _vina_error_msg = QMessageBox()

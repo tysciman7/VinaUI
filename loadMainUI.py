@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QComboBox, QSpinBox, QCheckBox, QPushButton, QAction, QStatusBar, QFileDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QComboBox, QSpinBox, QCheckBox, QPushButton, QAction, \
+    QStatusBar, QFileDialog
 from PyQt5 import uic
 import os
 import fnmatch
@@ -124,7 +125,7 @@ class MainUi(QMainWindow):
 
     # If user did not select randomized seed and a seed is not provided
     # Then an error will show prompting the user for one or the other
-    def check_entered_seed(self):
+    def valid_seed(self):
         if not (self.random_seed.isChecked()) and self.seed_value.text() == '':
             print('User needs to specify a seed(int) or select randomize seed')
             showError.seed_error()
@@ -133,14 +134,28 @@ class MainUi(QMainWindow):
             return True
 
     # If the user did not fill one of the configuration values then the user is prompted to fix said issues
-    def check_empty_fields(self):
-        if '' in [self.center_x.text(), self.center_y.text(), self.center_z.text(), self.size_z.text(),
-                  self.size_y.text(), self.size_z.text(), self.exhaustiveness.text()]:
-            print('One or more fields is empty Fields')
-            showError.pop_error()
-            return True
-        else:
-            return False
+    def valid_fields(self):
+        fields = {'Center X': self.center_x.text(),
+                  'Center Y': self.center_y.text(),
+                  'Center Z': self.center_z.text(),
+                  'Size X': self.size_z.text(),
+                  'Size Y': self.size_y.text(),
+                  'Size Z': self.size_z.text(),
+                  'Exhaustiveness': self.exhaustiveness.text()
+                  }
+
+        for field in fields:
+            if fields[field] == '':
+                print(field + ' is empty')
+                showError.blank_field(field)
+                return False
+
+            if not fields[field].isdigit():
+                print(field + ' has a non-int type inputted')
+                showError.non_int(field)
+                return False
+
+        return True
 
     # Takes all user inputted data and creates a dict to contain all variables
     def get_vina_conf_dict(self):
@@ -161,7 +176,7 @@ class MainUi(QMainWindow):
 
     # Calls the function to run the user selected ligand
     def run_selected_ligand(self):
-        if not (self.check_entered_seed()) or self.check_empty_fields():
+        if not (self.valid_seed()) or not self.valid_fields():
             return
         else:
             _ligand = self.ligand_list.currentText()
@@ -171,19 +186,15 @@ class MainUi(QMainWindow):
 
     # Calls the function to run all ligands in ligand directory
     def run_all_ligands(self):
-        if not (self.check_entered_seed()) or self.check_empty_fields():
+        if not (self.valid_seed()) or not self.valid_fields():
             return
         else:
             self.status_bar.showMessage('Time Remaining: ')
             self.status_bar.repaint()
             _vina_conf = self.get_vina_conf_dict()
             RunAllLigandsDialog(self, _vina_conf).exec()
-            # runVina.run_all_ligands(self, _vina_conf)
 
     # Updates status bar with a time remaining on a vina run
     def update_time_remaining(self, _time):
         self.status_bar.showMessage('Time Remaining: ' + f"{_time:.3f}")
         self.status_bar.repaint()
-
-
-
