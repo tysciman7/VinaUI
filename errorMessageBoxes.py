@@ -2,90 +2,101 @@ import sys
 
 from PyQt5.QtWidgets import QMessageBox
 
-# Dealing with User Errors
 
+# Dealing with User Errors
+class MessageBox(QMessageBox):
+    def __init__(self, msg_title, msg_text, msg_icon):
+        super(MessageBox, self).__init__()
+        self.setWindowTitle(msg_title)
+        self.setText(msg_text)
+        self.msg_icon = None
+
+        if msg_icon == 'warning':
+            self.setIcon(self.Icon.Warning)
+        elif msg_icon == 'critical':
+            self.setIcon(self.Icon.Critical)
+            sys.exit()
+
+
+# Errors Handled with Main Window
 
 # Informs user of error with populating previous configuration data
 def pop_error():
-    _pop_error_msg = QMessageBox()
-    _pop_error_msg.setWindowTitle('Populate Previous Data Error')
-    _pop_error_msg.setText('Error with previous configuration file, please manually enter data')
-    _pop_error_msg.setIcon(_pop_error_msg.Warning)
-    _pop_error_msg.exec()
+    MessageBox('Populate Previous Data Error',
+               'Error with previous configuration file, please manually enter data',
+               'warning'
+               ).exec()
 
 
 # Informs user of error with seed selection
 def seed_error():
-    _seed_error_msg = QMessageBox()
-    _seed_error_msg.setWindowTitle('Seed Selection Error')
-    _seed_error_msg.setText('Please indicate either specific seed or random seed')
-    _seed_error_msg.setIcon(_seed_error_msg.Warning)
-    _seed_error_msg.exec()
+    MessageBox('Seed Selection Error',
+               'Please indicate either specific seed or random seed',
+               'warning'
+               ).exec()
 
 
 # Informs the user of blank lineedit within conf data
 def blank_field(field):
-    blank_error = QMessageBox()
-    blank_error.setWindowTitle('Blank Field Encountered')
-    blank_error.setText(field + ' cannot be blank')
-    blank_error.setIcon(blank_error.Warning)
-    blank_error.exec()
+    MessageBox('Blank Field Encountered',
+               field + ' cannot be blank',
+               'warning'
+               ).exec()
 
 
+#
 def non_int(field):
-    non_int_error = QMessageBox()
-    non_int_error.setWindowTitle('Non-Integer Field Encountered')
-    non_int_error.setText(field + ' can only contain integers')
-    non_int_error.setIcon(non_int_error.Warning)
-    non_int_error.exec()
+    MessageBox('Non-Integer Field Encountered',
+               field + ' can only contain integers',
+               'warning'
+               ).exec()
 
+
+# Errors Handled with PathDialog
 
 # Informs user that they have not specified a correct vina path
 def vina_error():
-    _vina_error_msg = QMessageBox()
-    _vina_error_msg.setWindowTitle('Error with Vina Path Selection')
-    _vina_error_msg.setText('Vina path was not selected correctly please locate vina.exe')
-    _vina_error_msg.exec()
+    MessageBox('Error with Vina Path Selection',
+               'Vina path was not selected correctly please locate vina',
+               'warning'
+               ).exec()
 
 
 # Informs user that they must specify paths or vina will be unable to run
 def no_paths_init():
-    _no_path_error_msg = QMessageBox()
-    _no_path_error_msg.setWindowTitle('No Paths Initialized')
-    _no_path_error_msg.setText('This program will not run without first initializing the paths')
-    _no_path_error_msg.setIcon(_no_path_error_msg.Critical)
-    _no_path_error_msg.exec()
-    sys.exit()
+    MessageBox('No Paths Initialized',
+               'This program will not run without first initializing the paths',
+               'critical'
+               ).exec()
 
 
 # Informs user that they must first specify a data path before continuing below
 def no_data_path_specified():
-    _no_data_path_msg = QMessageBox()
-    _no_data_path_msg.setWindowTitle('No Data Path Specified')
-    _no_data_path_msg.setText('Please Specify a Data Path')
-    _no_data_path_msg.setIcon(_no_data_path_msg.Warning)
-    _no_data_path_msg.exec()
+    MessageBox('No Data Path Specified',
+               'Please Specify a Data Path',
+               'warning'
+               ).exec()
 
 
+# Errors Handled with RunAll Dialog
 # Informs user that the selected directory has no ligands within
 def no_ligands():
-    _no_ligands = QMessageBox()
-    _no_ligands.setWindowTitle('No Ligands Available')
-    _no_ligands.setText('No ligands are in selected directory')
-    _no_ligands.setIcon(_no_ligands.Warning)
-    _no_ligands.exec()
+    MessageBox('No Ligands Available',
+               'No ligands are in selected directory',
+               'warning'
+               ).exec()
 
 
 # Informs user that they have not specified an output directory
 def no_output_path():
-    _no_output = QMessageBox()
-    _no_output.setWindowTitle('No Output Specified')
-    _no_output.setText('Please Specify an Output File')
-    _no_output.setIcon(_no_output.Warning)
-    _no_output.exec()
+    MessageBox('No Output Specified',
+               'Please Specify an Output File',
+               'warning'
+               ).exec()
+
 
 def vina_error_stder(error):
-    vina_stder= QMessageBox()
+    vina_stder = QMessageBox()
     vina_stder.setWindowTitle('Error')
     vina_stder.setText('Vina Error: ' + str(error))
     vina_stder.setIcon(vina_stder.Warning)
