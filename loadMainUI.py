@@ -150,9 +150,9 @@ class MainUi(QMainWindow):
                 showError.blank_field(field)
                 return False
 
-            if not fields[field].isdigit():
-                print(field + ' has a non-int type inputted')
-                showError.non_int(field)
+            if not isfloat(fields[field]):
+                print(field + ' has a non-numerical type inputted')
+                showError.non_float(field)
                 return False
 
         return True
@@ -198,3 +198,13 @@ class MainUi(QMainWindow):
     def update_time_remaining(self, _time):
         self.status_bar.showMessage('Time Remaining: ' + f"{_time:.3f}")
         self.status_bar.repaint()
+
+
+# Checks value if it can be converted to a float
+def isfloat(num):
+    try:
+        float(num)
+        return True
+    except ValueError:
+        return False
+

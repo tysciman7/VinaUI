@@ -45,9 +45,9 @@ def blank_field(field):
 
 
 #
-def non_int(field):
-    MessageBox('Non-Integer Field Encountered',
-               field + ' can only contain integers',
+def non_float(field):
+    MessageBox('Non-Numerical Field Encountered',
+               field + ' can only contain numbers',
                'warning'
                ).exec()
 
