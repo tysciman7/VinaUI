@@ -64,6 +64,7 @@ class MainUi(QMainWindow):
 
     # Initializes the data path and fills the receptor and ligand combo boxes with their respective directories
     def init_all(self):
+        directoryManager.init_data_directory()
         self.data_home = directoryManager.get_config('data_path')
         self.pop_receptors()
         self.pop_ligands()

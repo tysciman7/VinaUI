@@ -195,7 +195,7 @@
          <string>Populates fields with previous configuration data.</string>
         </property>
         <property name="text">
-         <string>Populate Config Data</string>
+         <string>Previous Config Data</string>
         </property>
        </widget>
       </item>
