@@ -3,7 +3,7 @@
 
 #### This UI was developed to make running AutoDock Vina a seamless process for anyone wishing to simulate receptor/ ligand binding
 ### Notes:
-- This Application will not run without AutoDock Vina first installed on the device in use. To install AutoDock Vina, see [Installing Vina](https://vina.scripps.edu/downloads/)
+- This Application requires AutoDock Vina installed on the device. To install AutoDock Vina, see [Installing Vina](https://vina.scripps.edu/downloads/)
 - An executable/ script is provided to eliminate the need for the terminal
   - This application can still be run via an IDE or terminal by running main.py
 
