@@ -29,6 +29,7 @@ class MainUi(QMainWindow):
         self.size_y = self.findChild(QLineEdit, 'size_y_lineedit')
         self.size_z = self.findChild(QLineEdit, 'size_z_lineedit')
         self.exhaustiveness = self.findChild(QLineEdit, 'exhaustiveness_lineedit')
+        self.num_modes = self.findChild(QLineEdit, 'num_modes_lineedit')
         self.seed_value = self.findChild(QLineEdit, 'seed_lineedit')
         self.random_seed = self.findChild(QCheckBox, 'random_seed_checkbox')
         self.cpu_set = self.findChild(QSpinBox, 'cpu_spinbox')
@@ -171,7 +172,8 @@ class MainUi(QMainWindow):
             "SizeZ": self.size_z.text(),
             "Exhaustiveness": self.exhaustiveness.text(),
             "Seed": self.seed_value.text(),
-            "CPU": self.cpu_set.value()
+            "CPU": self.cpu_set.value(),
+            "Modes": self.num_modes.text()
         }
         return vina_conf
 

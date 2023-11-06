@@ -9,7 +9,7 @@ import errorMessageBoxes as showError
 
 # Creates Configuration File then runs Vina
 def create_conf(vina_conf_dict):
-    receptor, ligand, center_x, center_y, center_z, size_x, size_y, size_z, exhaustiveness, seed, cpu_value = vina_conf_dict.values()
+    receptor, ligand, center_x, center_y, center_z, size_x, size_y, size_z, exhaustiveness, seed, cpu_value, num_modes = vina_conf_dict.values()
 
     ligand_name = str(ligand[:-6])
     receptor_name = receptor[:-6]
@@ -35,6 +35,7 @@ def create_conf(vina_conf_dict):
     config_file.write(f"cpu = {cpu_value}\n")
     if not (seed == ''):
         config_file.write(f"seed = {seed}\n")
+    config_file.write(f"num_modes = {num_modes}\n")
     config_file.write(f"log = {_log_path}\n")
     config_file.write(f"out = {_output_path}\n")
     config_file.close()
