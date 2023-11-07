@@ -137,13 +137,15 @@ class MainUi(QMainWindow):
 
     # If the user did not fill one of the configuration values then the user is prompted to fix said issues
     def valid_fields(self):
+        print('Validating Input Data')
         fields = {'Center X': self.center_x.text(),
                   'Center Y': self.center_y.text(),
                   'Center Z': self.center_z.text(),
                   'Size X': self.size_z.text(),
                   'Size Y': self.size_y.text(),
                   'Size Z': self.size_z.text(),
-                  'Exhaustiveness': self.exhaustiveness.text()
+                  'Exhaustiveness': self.exhaustiveness.text(),
+                  '# of Modes (default = 9)': self.num_modes.text()
                   }
 
         for field in fields:
